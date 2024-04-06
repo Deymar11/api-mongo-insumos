@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INSUMOS</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID Insumo</th>
+      <th>Categoria</th>
+      <th>Nombre</th>
+      <th>Cantidad</th>
+      <th>Acciones</th> <!-- Nueva columna para acciones -->
+    </tr>
+  </thead>
+  <tbody id="insumosTableBody">
+  </tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  fetch('https://api-mongo-insumos.onrender.com/api/insumos')
+    .then(response => response.json())
+    .then(data => {
+      const insumos = data.insumos;
+      const tableBody = document.getElementById("insumosTableBody");
+
+      insumos.forEach(insumo => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${insumo.id_insumo}</td>
+          <td>${insumo.categoria}</td>
+          <td>${insumo.nombre}</td>
+          <td>${insumo.cantidad}</td>
+          <td>
+            <button onclick="editarInsumo('${insumo._id}')">Editar</button>
+            <button onclick="eliminarInsumo('${insumo._id}')">Eliminar</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+});
+
+function editarInsumo(insumoId) {
+  // Aquí puedes implementar la lógica para editar el insumo con el ID proporcionado
+  console.log('Editar insumo con ID:', insumoId);
+}
+
+function eliminarInsumo(insumoId) {
+  // Aquí puedes implementar la lógica para eliminar el insumo con el ID proporcionado
+  console.log('Eliminar insumo con ID:', insumoId);
+}
+</script>
+
+</body>
+</html>
